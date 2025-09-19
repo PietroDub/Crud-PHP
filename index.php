@@ -34,21 +34,33 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $sql = 'SELECT * FROM usuarios';
+                                    $usuarios = mysqli_query($conexao, $sql);
+                                    if (mysqli_num_rows($usuarios) > 0){
+                                        foreach($usuarios as $usuarios){
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>teste</td>
-                                    <td>teste@sla.com</td>
-                                    <td>01/01/2009</td>
+                                    <td> <?=$usuarios['id']?> </td>
+                                    <td><?=$usuarios['nome']?></td>
+                                    <td><?=$usuarios['email']?></td>
+                                    <td><?=date('d/m/Y', strtotime($usuarios['data_nascimento']))?></td>
                                     <td>
-                                        <a href="" class="btn btn-secondary btn-sn">Visualizar</a>
-                                        <a href="" class="btn btn-success btn-sn">Editar</a>
-                                        <form action="#" method="POST" class="d-inline">
-                                            <button type="submit" name="delete_usuario" value="1" class="btn btn-danger btn-sn">
+                                        <a href="usuario-view.php?id=<?=$usuarios['id']?>" class="btn btn-secondary btn-sn">Visualizar</a>
+                                        <a href="usuario-edit.php?id=<?=$usuarios['id']?>" class="btn btn-success btn-sn">Editar</a>
+                                        <form action="acoes.php" method="POST" class="d-inline">
+                                            <button onclick="return confirm('Tem certeza que deseja excluir?')" type="submit" name="delete_usuario" value="<?= $usuarios['id'] ?>" class="btn btn-danger btn-sn">
                                                 Excluir
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
+                                <?php
+                                    };
+                                    } else {
+                                        echo '<h5> Nenhum usuário foi encontrado! </h5>';
+                                    }
+                                ?>
                             </tbody>
                         </table>
                     </div>
